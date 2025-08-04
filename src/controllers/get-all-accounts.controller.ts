@@ -3,7 +3,7 @@ import { Prisma } from "generated/prisma";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Controller("/accounts")
-export class GetAllAccounts{
+export class GetAllAccountsController{
   constructor(private prisma: PrismaService) {}
 
   @Get()
