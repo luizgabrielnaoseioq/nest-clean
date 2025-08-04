@@ -1,29 +1,30 @@
 @baseUrl = http://localhost:3333
+@authToken = {{authenticate.response.body.access_token}}
 
 # @name create_account
 POST {{baseUrl}}/accounts
 Content-Type: application/json
 
 {
-  "name": "Luiz Gabriel de Oliveira Nazario",
-  "email": "gabrielnz2006@gmail.com",
-  "password": "?Teste?6689"
+  "name": "Diego Fernandes",
+  "email": "diego@rocketseat.com.br",
+  "password": "123456"
 }
-
-###
-
-# @name get_all_accounts
-
-GET {{baseUrl}}/accounts
 
 ###
 
 # @name authenticate
-
 POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "name": "Luiz Gabriel de Oliveira Nazario",
-  "password": "?Teste?6689"
+  "email": "diego@rocketseat.com.br",
+  "password": "123456"
 }
+
+###
+
+# @name create_question
+POST {{baseUrl}}/questions
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
