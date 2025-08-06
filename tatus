@@ -1,0 +1,57 @@
+[33m3fb2184[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m fix: corrige import do PrismaClient para usar @prisma/client padrão
+[33mb63bd7c[m fix: resolve problemas de import do PrismaClient
+[33m8d0f4c2[m fix: corrige estrutura de entrada da aplicação
+[33m161f44f[m test: adiciona configuração de testes e factories
+[33m4bbe237[m feat: reorganiza estrutura do projeto seguindo Clean Architecture
+[33ma974afb[m config: atualiza configurações do projeto
+[33mb7ecfa7[m Implementa controlador para criação de perguntas com validação de entrada usando Zod. Atualiza o módulo principal para incluir novos controladores e modifica o arquivo client.http com um exemplo de requisição para criação de perguntas.
+[33m08398a9[m Refatora o módulo de autenticação, adicionando o JwtStrategy e ajustando a validação de payload com Zod. Remove o controlador CreateQuestions e corrige a importação do controlador CreateQuestion. Atualiza a formatação do código para manter a consistência.
+[33m47cc93d[m Atualiza o arquivo client.http com novos dados de conta e autenticação, além de adicionar um novo endpoint para criação de perguntas. Inclui a dependência passport-jwt no package.json e pnpm-lock.yaml, e registra o controlador CreateQuestion no módulo principal da aplicação.
+[33m0702c3a[m Implementa autenticação no controlador AuthenticateController, adicionando validação de entrada com Zod e tratamento de erros para credenciais inválidas. O método handle agora verifica a existência do usuário e a validade da senha antes de gerar um token de acesso JWT.
+
+                   SSUUMMMMAARRYY OOFF LLEESSSS CCOOMMMMAANNDDSS
+
+      Commands marked with * may be preceded by a number, _N.
+      Notes in parentheses indicate the behavior if _N is given.
+      A key preceded by a caret indicates the Ctrl key; thus ^K is ctrl-K.
+
+  h  H                 Display this help.
+  q  :q  Q  :Q  ZZ     Exit.
+ ---------------------------------------------------------------------------
+
+                           MMOOVVIINNGG
+
+  e  ^E  j  ^N  CR  *  Forward  one line   (or _N lines).
+  y  ^Y  k  ^K  ^P  *  Backward one line   (or _N lines).
+  ESC-j             *  Forward  one file line (or _N file lines).
+  ESC-k             *  Backward one file line (or _N file lines).
+  f  ^F  ^V  SPACE  *  Forward  one window (or _N lines).
+  b  ^B  ESC-v      *  Backward one window (or _N lines).
+  z                 *  Forward  one window (and set window to _N).
+  w                 *  Backward one window (and set window to _N).
+  ESC-SPACE         *  Forward  one window, but don't stop at end-of-file.
+  ESC-b             *  Backward one window, but don't stop at beginning-of-file.
+  d  ^D             *  Forward  one half-window (and set half-window to _N).
+  u  ^U             *  Backward one half-window (and set half-window to _N).
+  ESC-)  RightArrow *  Right one half screen width (or _N positions).
+  ESC-(  LeftArrow  *  Left  one half screen width (or _N positions).
+  ESC-}  ^RightArrow   Right to last column displayed.
+  ESC-{  ^LeftArrow    Left  to first column.
+  F                    Forward forever; like "tail -f".
+  ESC-F                Like F but stop when search pattern is found.
+  r  ^R  ^L            Repaint screen.
+  R                    Repaint screen, discarding buffered input.
+        ---------------------------------------------------
+        Default "window" is the screen height.
+        Default "half-window" is half of the screen height.
+ ---------------------------------------------------------------------------
+
+                          SSEEAARRCCHHIINNGG
+
+  /_p_a_t_t_e_r_n          *  Search forward for (_N-th) matching line.
+  ?_p_a_t_t_e_r_n          *  Search backward for (_N-th) matching line.
+  n                 *  Repeat previous search (for _N-th occurrence).
+  N                 *  Repeat previous search in reverse direction.
+  ESC-n             *  Repeat previous search, spanning files.
+  ESC-N             *  Repeat previous search, reverse dir. & spanning files.
+  ^O^N  ^On         *  Search forward for (_N-th) OSC8 hyperlink.
