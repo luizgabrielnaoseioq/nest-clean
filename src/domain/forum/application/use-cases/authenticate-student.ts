@@ -1,52 +1,55 @@
 import { Either, left, right } from "@/core/either";
-import { StudentAlreadyExistsError } from "./errors/student-already-exists-error";
-import { Student } from "../../enterprise/entities/student";
+import { Injectable } from "@nestjs/common";
 import { StudentsRepository } from "../repositories/students-repository";
-import { HashGenerator } from "../cryptography/hash-generator";
+import { Encrypter } from "../cryptography/encrypter";
+import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { HashComparer } from "../cryptography/hash-compare";
 
-interface RegisterStudentUseCaseRequest {
-  name: string;
+interface AuthenticateStudentUseCaseRequest {
   email: string;
   password: string;
 }
 
-type RegisterStudentUseCaseResponse = Either<
-  StudentAlreadyExistsError,
+type AuthenticateStudentUseCaseResponse = Either<
+  WrongCredentialsError,
   {
-    student: Student;
+    accessToken: string;
   }
 >;
 
+@Injectable()
 export class AuthenticateStudentUseCase {
   constructor(
-    private studentRepository: StudentsRepository,
-    private hashGenerator: HashGenerator
+    private studentsRepository: StudentsRepository,
+    private hashComparer: HashComparer,
+    private encrypter: Encrypter
   ) {}
 
   async execute({
-    name,
     email,
     password,
-  }: RegisterStudentUseCaseRequest): Promise<RegisterStudentUseCaseResponse> {
-    const studentWithSameEmail =
-      await this.studentRepository.findByEmail(email);
+  }: AuthenticateStudentUseCaseRequest): Promise<AuthenticateStudentUseCaseResponse> {
+    const student = await this.studentsRepository.findByEmail(email);
 
-    if (studentWithSameEmail) {
-      return left(new StudentAlreadyExistsError(email));
+    if (!student) {
+      return left(new WrongCredentialsError());
     }
 
-    const hashedPassword = await this.hashGenerator.hash(password);
+    const isPasswordValid = await this.hashComparer.compare(
+      password,
+      student.password
+    );
 
-    const student = Student.create({
-      name,
-      email,
-      password: hashedPassword,
+    if (!isPasswordValid) {
+      return left(new WrongCredentialsError());
+    }
+
+    const accessToken = await this.encrypter.encrypt({
+      sub: student.id.toString(),
     });
 
-    await this.studentRepository.create(student);
-
     return right({
-      student,
+      accessToken,
     });
   }
 }
