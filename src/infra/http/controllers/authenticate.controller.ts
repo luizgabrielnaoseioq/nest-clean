@@ -1,4 +1,10 @@
-import { Body, Controller, Post, UsePipes } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Post,
+  UnauthorizedException,
+  UsePipes,
+} from "@nestjs/common";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { z } from "zod";
 import { AuthenticateStudentUseCase } from "@/domain/forum/application/use-cases/authenticate-student";
@@ -25,7 +31,7 @@ export class AuthenticateController {
     });
 
     if (result.isLeft()) {
-      throw new Error();
+      throw new UnauthorizedException("Invalid Credentals");
     }
 
     const { accessToken } = result.value;
