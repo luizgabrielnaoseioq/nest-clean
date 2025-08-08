@@ -1,9 +1,17 @@
 import { JwtAuthGuard } from "@/infra/auth/jwt-auth.guard";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
-import { Controller, UseGuards, Get, Query } from "@nestjs/common";
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Query,
+  BadRequestException,
+  ConflictException,
+} from "@nestjs/common";
 import { z } from "zod";
 import { FetchRecentQuestionsUseCase } from "@/domain/forum/application/use-cases/fetch-recent-questions";
 import { QuestionPresenter } from "../presenters/questions-presenter";
+import { StudentAlreadyExistsError } from "@/domain/forum/application/use-cases/errors/student-already-exists-error";
 
 const pageQueryParamSchema = z
   .string()
@@ -28,10 +36,10 @@ export class FetchRecentQuestionsController {
     });
 
     if (result.isLeft()) {
-      throw new Error()
+      throw new BadRequestException();
     }
 
-    const questions = result.value.questions
+    const questions = result.value.questions;
 
     return { questions: questions.map(QuestionPresenter.toHTTP) };
   }
